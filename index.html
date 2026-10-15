@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>到位速递 Express | 全球国际物流回国行李、加拿大、美国、英国、澳洲全方位的国际速递、酒店取件、干线运输及清关保障服务</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: Arial, Helvetica, sans-serif; background: #0d1117; color: #fff; line-height: 1.5; }
+
+        /* 导航 */
+        header {
+            position: fixed; top: 0; left: 0; width: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 18px 6%; z-index: 999; border-bottom: 1px solid #222;
+        }
+        .logo { font-size: 24px; font-weight: bold; color: #ff2d2d; letter-spacing: 1px; }
+        .logo span { color: #f59e0b; }
+        nav { display: flex; gap: 20px; }
+        nav a { color: white; text-decoration: none; transition: .3s; font-size: 14px; }
+        nav a:hover { color: #ff3b3b; }
+
+        /* Hero */
+        .hero {
+            height: 60vh; display: flex; align-items: center; justify-content: center;
+            text-align: center; padding: 20px;
+            background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url("https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1600&q=80");
+            background-size: cover; background-position: center;
+        }
+        .hero h1 { font-size: 38px; margin-bottom: 15px; color: #fff; }
+        .hero p { font-size: 16px; color: #ddd; }
+
+        /* 车站大屏区 */
+        .board-section { padding: 40px 5% 20px 5%; background: #0b0e14; }
+        .station-board {
+            background-color: #07090e; border: 2px solid #222; border-radius: 12px; padding: 15px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.9), 0 20px 40px rgba(0,0,0,0.7);
+        }
+        .board-table-header {
+            display: grid; grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1.2fr;
+            background: #1a2230; padding: 10px; border-radius: 6px; font-size: 11px;
+            font-weight: 700; color: #f59e0b; text-transform: uppercase; margin-bottom: 8px; text-align: center;
+        }
+        .board-rows-container { max-height: 350px; overflow-y: auto; }
+        .train-row {
+            display: grid; grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1.2fr; gap: 8px; align-items: center;
+            background: #161b22; border: 1px solid #222; padding: 10px; border-radius: 6px; margin-bottom: 6px; font-size: 12px; text-align: center;
+        }
+        .flip-cell { background: #000; color: #f59e0b; font-family: monospace; font-weight: bold; padding: 5px 8px; border-radius: 3px; border: 1px solid #222; }
+        .truck-id { font-weight: bold; color: #0ea5e9; font-family: monospace; }
+        .route-path { color: #fff; font-weight: 600; text-align: left; padding-left: 5px; }
+        .freq-tag { background: rgba(14, 165, 233, 0.15); color: #0ea5e9; padding: 2px 6px; border-radius: 3px; font-size: 10px; }
+        .status-running { color: #10b981; font-weight: bold; }
+
+        /* 3299个按钮生成区（地下/底部区域） */
+        .buttons-section { padding: 40px 5%; background: #0d1117; }
+        .buttons-container {
+            background: #161b22; border: 1px solid #222; border-radius: 12px; padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .buttons-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
+        .buttons-header h3 { color: #f59e0b; font-size: 20px; }
+        .badge { background: #ff2d2d; color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; }
+        
+        .search-box {
+            width: 100%; padding: 12px 18px; font-size: 15px; background: #0b0e14; border: 1px solid #333;
+            color: #fff; border-radius: 8px; margin-bottom: 20px; outline: none; transition: border 0.3s;
+        }
+        .search-box:focus { border-color: #ff2d2d; }
+
+        /* 3299个网格按钮面板 */
+        .grid-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 8px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        .grid-buttons::-webkit-scrollbar { width: 6px; }
+        .grid-buttons::-webkit-scrollbar-thumb { background: #ff2d2d; border-radius: 3px; }
+
+        .btn-item {
+            display: block;
+            padding: 10px 6px;
+            background: #21262d;
+            color: #58a6ff;
+            text-align: center;
+            text-decoration: none;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .btn-item:hover {
+            background: #ff2d2d;
+            color: #fff;
+            border-color: #ff2d2d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(255,45,45,0.3);
+        }
+
+        footer { background: #000; padding: 20px; text-align: center; color: #888; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+<!-- 顶级导航 -->
+<header>
+    <div class="logo">DAO WEI <span>EXPRESS</span></div>
+    <nav>
+        <a href="#board">智能调度大屏</a>
+        <a href="#network">全球网络</a>
+        <a href="#features">核心优势</a>
+        <a href="../" class="nav-btn">返回上级目录</a>
+    </nav>
+</header>
+
+<!-- 视觉大图区 -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>全球国际物流 <br><span>加东干线与跨境专线智能调度</span></h1>
+        <p>提供中国、加拿大、美国、英国、澳洲全方位的国际速递、酒店取件、干线运输及清关保障服务。</p>
+        <div class="hero-btns">
+            <a href="#board" class="btn-main">实时运力大屏</a>
+            <a href="#network" class="btn-sub">全球节点网络</a>
+        </div>
+    </div>
+</section>
+
+<!-- 车站大屏区 -->
+<div class="board-section" id="board">
+    <h3 style="color:#ff2d2d; font-size:16px; margin-bottom:12px;">🚛 到位速递加东卡车干线智能调度大屏</h3>
+    <div class="station-board">
+        <div class="board-table-header">
+            <div>车次方向</div>
+            <div style="text-align: left; padding-left: 5px;">干线路线</div>
+            <div>频次</div>
+            <div>发车时间</div>
+            <div>车型</div>
+            <div>当前状态</div>
+        </div>
+        <div class="board-rows-container" id="board-rows"></div>
+    </div>
+</div>
+
+<!-- ==================== 底部地下：生成 3299 个按钮区域 ==================== -->
+<div class="buttons-section" id="buttons-area">
+    <div class="buttons-container">
+        <div class="buttons-header">
+            <h3>📁 到位速递客服微信 fundes </h3>
+            <span class="badge">到位速递</span>
+        </div>
+        <p style="color:#888; font-size:13px; margin-bottom:15px;">您可以在下方直接搜索单号或点击任意按钮查看对应的网页（1.html ~ 3299.html）：</p>
+        
+        <!-- 实时搜索框 -->
+        <input type="text" id="btn-search" class="search-box" placeholder="到位速递4天到中国" oninput="filterButtons()">
+        
+        <!-- 到位速递4382287888-->
+        <div class="grid-buttons" id="buttons-grid"></div>
+    </div>
+</div>
+
+<footer>
+    © 2026 DW Global Express (到位速递). All Rights Reserved.
+</footer>
+
+<script>
+    // 自动生成 1 到 3299 的按钮
+    function renderButtons() {
+        const grid = document.getElementById('buttons-grid');
+        let html = '';
+        for (let i = 1; i <= 3299; i++) {
+            html += `<a href="${i}.html" class="btn-item" target="_blank" title="网页 ${i}">网页 ${i}</a>`;
+        }
+        grid.innerHTML = html;
+    }
+
+    // 实时搜索过滤按钮
+    function filterButtons() {
+        const keyword = document.getElementById('btn-search').value.toLowerCase().trim();
+        const buttons = document.getElementById('buttons-grid').getElementsByClassName('btn-item');
+        
+        for (let i = 0; i < buttons.length; i++) {
+            const text = buttons[i].textContent.toLowerCase();
+            if (text.includes(keyword)) {
+                buttons[i].style.display = 'block';
+            } else {
+                buttons[i].style.display = 'none';
+            }
+        }
+    }
+
+    // 车站大屏动态刷新逻辑
+    const citiesList = ["多伦多", "蒙特利尔", "渥太华", "惠特比", "奥沙华", "阿贾克斯", "Markham", "Scarborough", "Mississauga", "Quebec City", "Hamilton", "London", "Brossard", "Laval"];
+    const truckTypesList = ["53尺全封闭干线大卡", "26尺尾板厢式货车", "48尺标箱冷藏卡", "24尺城际快运卡"];
+    const statusList = ["🟢 去程高速对开中", "🔵 返程满载疾驰中", "🟡 当日折返整备中", "🟢 准点到达分拨中心"];
+
+    function generateBatchRows() {
+        const container = document.getElementById('board-rows');
+        if (!container) return;
+        let html = '';
+        for(let i = 1; i <= 10; i++) {
+            let origin = citiesList[Math.floor(Math.random() * citiesList.length)];
+            let dest = citiesList[Math.floor(Math.random() * citiesList.length)];
+            let truckId = `DW-${Math.floor(Math.random() * 89999) + 10000}`;
+            let truck = truckTypesList[Math.floor(Math.random() * truckTypesList.length)];
+            let status = statusList[Math.floor(Math.random() * statusList.length)];
+            html += `
+                <div class="train-row">
+                    <div class="truck-id">${truckId}</div>
+                    <div class="route-path">${origin} ⇄ ${dest}</div>
+                    <div><span class="freq-tag">一天一趟</span></div>
+                    <div class="flip-cell">10月15日 10:00</div>
+                    <div style="font-size:11px; color:#94a3b8;">${truck}</div>
+                    <div class="status-running">${status}</div>
+                </div>
+            `;
+        }
+        container.innerHTML = html;
+    }
+
+    window.onload = function() {
+        renderButtons();
+        generateBatchRows();
+    };
+</script>
+
+</body>
+</html>
