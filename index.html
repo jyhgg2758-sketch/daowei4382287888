@@ -134,21 +134,186 @@
     </div>
 </section>
 
-<!-- 车站大屏区 -->
-<div class="board-section" id="board">
-    <h3 style="color:#ff2d2d; font-size:16px; margin-bottom:12px;">🚛 到位速递加东卡车干线智能调度大屏</h3>
-    <div class="station-board">
-        <div class="board-table-header">
-            <div>车次方向</div>
-            <div style="text-align: left; padding-left: 5px;">干线路线</div>
-            <div>频次</div>
-            <div>发车时间</div>
-            <div>车型</div>
-            <div>当前状态</div>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>到位速递卡车运输调度中心</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Inter 字体与 FontAwesome 图标 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* 毛玻璃效果 */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .dark .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        /* iframe 容器过渡效果 */
+        .preview-frame-wrapper {
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 min-h-screen text-slate-100 flex flex-col antialiased selection:bg-blue-500 selection:text-white">
+
+    <!-- 顶部导航栏 -->
+    <header class="w-full border-b border-white/10 glass-panel sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/30">
+                    <i class="fa-solid fa-truck-fast text-white text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg tracking-tight bg-gradient-to-r from-white via-slate-200 to-blue-200 bg-clip-text text-transparent">
+                        到位速递 · 卡车运输调度中心
+                    </h1>
+                    <p class="text-xs text-slate-400">Smart Logistics Dispatch & Control Center</p>
+                </div>
+            </div>
+
+            <!-- 系统状态指标 -->
+            <div class="hidden md:flex items-center space-x-6 text-xs font-medium text-slate-300">
+                <div class="flex items-center space-x-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span class="text-emerald-400">系统运行正常</span>
+                </div>
+                <div class="flex items-center space-x-1.5 bg-white/5 border border-white/10 px-3 py-1.5 rounded-full">
+                    <i class="fa-solid fa-satellite-dish text-blue-400"></i>
+                    <span>实时节点联通</span>
+                </div>
+            </div>
         </div>
-        <div class="board-rows-container" id="board-rows"></div>
-    </div>
-</div>
+    </header>
+
+    <!-- 主体展示区域 -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col">
+        
+        <!-- 控制与视图切换面板 -->
+        <div class="glass-panel rounded-2xl p-4 mb-6 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+            
+            <!-- 标题说明 -->
+            <div class="flex items-center space-x-3 w-full sm:w-auto">
+                <div class="p-2.5 bg-blue-500/20 text-blue-400 rounded-xl">
+                    <i class="fa-solid fa-desktop"></i>
+                </div>
+                <div>
+                    <h2 class="font-semibold text-slate-100 text-sm sm:text-base">可视化大屏仿真展示</h2>
+                    <p class="text-xs text-slate-400">支持多终端响应式适配与比例切换模拟</p>
+                </div>
+            </div>
+
+            <!-- 设备模拟切换按钮组 -->
+            <div class="flex items-center bg-slate-900/60 p-1.5 rounded-xl border border-white/10 w-full sm:w-auto justify-center">
+                <button onclick="setDeviceMode('desktop')" id="btn-desktop" class="flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-medium transition-all flex items-center justify-center space-x-2 bg-blue-600 text-white shadow-md shadow-blue-600/30">
+                    <i class="fa-solid fa-laptop"></i>
+                    <span>电脑全屏</span>
+                </button>
+                <button onclick="setDeviceMode('tablet')" id="btn-tablet" class="flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-medium transition-all flex items-center justify-center space-x-2 text-slate-400 hover:text-white hover:bg-white/5">
+                    <i class="fa-solid fa-tablet-screen-button"></i>
+                    <span>平板视窗</span>
+                </button>
+                <button onclick="setDeviceMode('mobile')" id="btn-mobile" class="flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-medium transition-all flex items-center justify-center space-x-2 text-slate-400 hover:text-white hover:bg-white/5">
+                    <i class="fa-solid fa-mobile-screen"></i>
+                    <span>手机模拟</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- iframe 响应式展示舞台 -->
+        <div class="flex-1 flex items-center justify-center w-full">
+            <div id="frame-container" class="preview-frame-wrapper w-full h-[650px] bg-slate-950/80 rounded-2xl border border-white/15 shadow-2xl overflow-hidden flex flex-col relative max-w-full">
+                
+                <!-- 模拟浏览器顶部栏 -->
+                <div class="h-10 bg-slate-900/90 border-b border-white/10 flex items-center px-4 justify-between select-none">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-3 h-3 rounded-full bg-rose-500/80 hover:bg-rose-500 cursor-pointer"></div>
+                        <div class="w-3 h-3 rounded-full bg-amber-500/80 hover:bg-amber-500 cursor-pointer"></div>
+                        <div class="w-3 h-3 rounded-full bg-emerald-500/80 hover:bg-emerald-500 cursor-pointer"></div>
+                    </div>
+                    <div class="bg-slate-800/80 border border-white/5 px-4 py-1 rounded-md text-[11px] text-slate-400 flex items-center space-x-2 max-w-xs truncate">
+                        <i class="fa-solid fa-lock text-[10px] text-emerald-400"></i>
+                        <span class="truncate">https://www.xn--zbssc327di94a.top/vip.html</span>
+                    </div>
+                    <div class="flex items-center space-x-3 text-slate-400 text-xs">
+                        <button onclick="reloadFrame()" title="刷新子页面" class="hover:text-white transition-colors"><i class="fa-solid fa-rotate-right"></i></button>
+                        <a href="https://www.xn--zbssc327di94a.top/vip.html" target="_blank" title="新窗口打开" class="hover:text-white transition-colors"><i class="fa-solid fa-up-right-from-square"></i></a>
+                    </div>
+                </div>
+
+                <!-- iframe 核心主体 -->
+                <div class="flex-1 w-full relative bg-slate-950">
+                    <iframe 
+                        id="dispatch-frame"
+                        src="https://www.xn--zbssc327di94a.top/vip.html" 
+                        class="w-full h-full border-none transition-all duration-300"
+                        title="到位速递卡车运输调度中心子系统"
+                        onerror="handleFrameError()">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 底部版权信息 -->
+    <footer class="py-4 text-center text-xs text-slate-500 border-t border-white/5">
+        &copy; 2026 到位速递 (ZBSSC) Logistics Management System. All Rights Reserved.
+    </footer>
+
+    <!-- JavaScript 交互控制脚本 -->
+    <script>
+        // 设备切换视窗逻辑
+        function setDeviceMode(mode) {
+            const container = document.getElementById('frame-container');
+            const btnDesktop = document.getElementById('btn-desktop');
+            const btnTablet = document.getElementById('btn-tablet');
+            const btnMobile = document.getElementById('btn-mobile');
+
+            // 重置所有按钮状态
+            [btnDesktop, btnTablet, btnMobile].forEach(btn => {
+                btn.className = "flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-medium transition-all flex items-center justify-center space-x-2 text-slate-400 hover:text-white hover:bg-white/5";
+            });
+
+            // 根据模式调整容器尺寸样式
+            if (mode === 'desktop') {
+                container.style.maxWidth = '100%';
+                container.style.height = '650px';
+                btnDesktop.className = "flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-medium transition-all flex items-center justify-center space-x-2 bg-blue-600 text-white shadow-md shadow-blue-600/30";
+            } else if (mode === 'tablet') {
+                container.style.maxWidth = '768px';
+                container.style.height = '600px';
+                btnTablet.className = "flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-medium transition-all flex items-center justify-center space-x-2 bg-blue-600 text-white shadow-md shadow-blue-600/30";
+            } else if (mode === 'mobile') {
+                container.style.maxWidth = '390px';
+                container.style.height = '660px';
+                btnMobile.className = "flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-medium transition-all flex items-center justify-center space-x-2 bg-blue-600 text-white shadow-md shadow-blue-600/30";
+            }
+        }
+
+        // 刷新 iframe 视图
+        function reloadFrame() {
+            const frame = document.getElementById('dispatch-frame');
+            frame.src = frame.src;
+        }
+
+        // 容错降级提示
+        function handleFrameError() {
+            console.warn("由于目标站点启用了防嵌入保护(X-Frame-Options)或网络异常，iframe 可能会限制内嵌。");
+        }
+    </script>
+</body>
+</html>
 
 <!-- ==================== 底部地下：生成 3299 个按钮区域 ==================== -->
 <div class="buttons-section" id="buttons-area">
