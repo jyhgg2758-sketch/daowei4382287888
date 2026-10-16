@@ -5,9 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>到位速递 Express | 全球国际物流回国行李、加拿大、美国、英国、澳洲全方位的国际速递、酒店取件、干线运输及清关保障服务 到位速递全球运输</title>
     <style>
+<script>
+let searchData = [];
+
+// 异步加载服务器上的 txt 文件
+async function loadSearchData(url){
+    try {
+        const res = await fetch(url);
+        const text = await res.text();
+        // 按行分割，过滤掉空行
+        searchData = text.split(/\r?\n/).filter(line => line.trim() !== "");
+        displayResults(searchData, "");
+    } catch (error) {
+        console.error("加载 TXT 文件失败", error);
+    }
+}
+
+function displayResults(items, filter){
+    const container = document.getElementById("results");
+    container.innerHTML = "";
+    // 如果有过滤词就筛选，没有就默认显示前 20 条（避免一次性渲染太多卡顿）
+    const filtered = items.filter(i => i.toLowerCase().includes(filter.toLowerCase()));
+    
+    if(filtered.length === 0){
+        container.innerHTML = "<p style='font-size:12px; color:#666;'>未找到相关内容</p>";
+        return;
+    }
+    
+    // 限制最多显示 50 条，提升性能
+    filtered.slice(0, 50).forEach(i => {
+        const div = document.createElement("div");
+        div.className = "item";
+        div.style.padding = "6px 8px";
+        div.style.borderBottom = "1px solid #eee";
+        div.style.fontSize = "13px";
+        div.textContent = i;
+        container.appendChild(div);
+    });
+}
+
+// 页面加载时调用您的 txt 文件（请确保同目录下有该文件）
+loadSearchData("drugs.txt");
+
+// 监听输入框搜索
+document.getElementById("search").addEventListener("input", (e) => {
+    const value = e.target.value.trim();
+    displayResults(searchData, value);
+});
+</script>
+
+
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body { font-family: Arial, Helvetica, sans-serif; background: #0d1117; color: #fff; line-height: 1.5; }
+
+
+
 
         /* 导航 */
         header {
@@ -396,6 +450,8 @@
         generateBatchRows();
     };
 </script>
+
+
 
 </body>
 </html>
