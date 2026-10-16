@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DW Global Express - 联系我们</title>
+<meta name="description" content="DW Global Express全球服务网点 — 加拿大、美国、英国20+城市门店地址。客服电话+1 4382287888，微信fundes，专业国际物流空运海运快递服务。">
+<meta name="keywords" content="DW Global Express,国际物流,加拿大寄中国,空运,海运,门店地址,联系方式">
+<link rel="canonical" href="http://www.xn--zbssc327di94a.top/contact.html">
+<meta property="og:title" content="DW Global Express - 联系我们">
+<meta property="og:description" content="DW Global Express全球服务网点 — 加拿大、美国、英国20+城市门店地址。专业国际物流服务。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://www.xn--zbssc327di94a.top/contact.html">
+<meta property="og:site_name" content="DW Global Express">
+<meta property="og:locale" content="zh_CN">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#0b0b0b;
+    color:#fff;
+}
+
+/* 红色光晕背景 */
+body::before{
+    content:'';
+    position:fixed;
+    width:700px;
+    height:700px;
+    background:radial-gradient(circle,#ff0000 0%,transparent 70%);
+    top:-200px;
+    right:-200px;
+    opacity:0.25;
+    z-index:-1;
+}
+
+/* 顶部导航 */
+.top-bar{
+    background:#111;
+    border-bottom:2px solid #ff0000;
+    padding:15px 20px;
+}
+.nav{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.logo{
+    font-size:22px;
+    color:#ff0000;
+    font-weight:bold;
+}
+.menu{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+.menu a{
+    text-decoration:none;
+    color:#fff;
+    padding:8px 16px;
+    border-radius:6px;
+    border:1px solid #333;
+    transition:.3s;
+    font-size:14px;
+}
+.menu a:hover{
+    border-color:#ff0000;
+    box-shadow:0 0 10px #ff0000;
+}
+.menu .main-btn{
+    background:#ff0000;
+    border:none;
+}
+.menu .main-btn:hover{
+    background:#cc0000;
+}
+
+/* 标题 */
+.header{
+    text-align:center;
+    padding:60px 20px 40px;
+}
+.header h1{
+    font-size:42px;
+    color:#ff0000;
+}
+
+/* 地址区域 */
+.address-wrapper{
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+}
+.address-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:30px;
+}
+.address-card{
+    background:#111;
+    border:1px solid #ff0000;
+    border-radius:15px;
+    padding:25px;
+    transition:.3s;
+}
+.address-card:hover{
+    box-shadow:0 0 25px rgba(255,0,0,0.5);
+    transform:translateY(-6px);
+}
+.address-card h3{
+    color:#ff3300;
+    margin-bottom:15px;
+    border-bottom:1px solid #ff0000;
+    padding-bottom:10px;
+}
+.address-card ul{
+    list-style:none;
+}
+.address-card li{
+    margin-bottom:18px;
+    font-size:14px;
+    color:#ccc;
+    line-height:1.6;
+}
+.address-card a{
+    display:inline-block;
+    margin-top:5px;
+    color:#ff0000;
+    text-decoration:none;
+    font-size:13px;
+}
+.address-card a:hover{
+    text-decoration:underline;
+}
+
+/* 联系方式 */
+.contact-box{
+    max-width:1000px;
+    margin:60px auto;
+    background:#111;
+    border:1px solid #ff0000;
+    padding:40px;
+    border-radius:15px;
+}
+input,textarea{
+    width:100%;
+    padding:12px;
+    margin-bottom:15px;
+    background:#1a1a1a;
+    border:1px solid #333;
+    border-radius:8px;
+    color:#fff;
+}
+input:focus,textarea:focus{
+    border-color:#ff0000;
+}
+button{
+    background:#ff0000;
+    color:#fff;
+    padding:12px 30px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    transition:.3s;
+}
+button:hover{
+    background:#cc0000;
+    transform:scale(1.05);
+}
+
+/* 返回顶部按钮 */
+#topBtn{
+    position:fixed;
+    bottom:30px;
+    right:30px;
+    background:#ff0000;
+    padding:12px 16px;
+    border-radius:50%;
+    cursor:pointer;
+    display:none;
+}
+
+/* 底部 */
+.footer{
+    background:#111;
+    text-align:center;
+    padding:30px 20px;
+    border-top:1px solid #222;
+    margin-top:60px;
+    font-size:14px;
+    color:#aaa;
+}
+
+/* 浮动客服小窗 */
+#chatWidget{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    width:420px;
+    height:50px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.3);
+    border-radius:12px;
+    overflow:hidden;
+    background:#fff;
+    transition:height 0.3s;
+    z-index:99999;
+}
+#chatHeader{
+    background:#2563eb;
+    color:#fff;
+    height:50px;
+    line-height:50px;
+    padding:0 12px;
+    font-weight:bold;
+    cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+#chatHeader span.toggleBtn{
+    cursor:pointer;
+    font-size:18px;
+}
+#chatContent{
+    display:none;
+    padding:10px;
+    max-height:600px;
+    overflow-y:auto;
+}
+#tabBar{
+    display:flex;
+    margin-bottom:5px;
+}
+.tabBtn{
+    flex:1;
+    text-align:center;
+    padding:6px 0;
+    border-radius:5px;
+    cursor:pointer;
+    background:#eee;
+    margin-right:5px;
+    user-select:none;
+}
+.tabBtn.active{
+    background:#2563eb;
+    color:#fff;
+}
+
+/* 搜索药物输入框改浅灰，文字黑色 */
+#tabSearch input {
+    width:100%;
+    padding:8px;
+    margin-bottom:8px;
+    border-radius:5px;
+    border:1px solid #ccc;
+    color:#000;         /* 输入文字黑色 */
+    background:#f0f0f0; /* 浅灰背景 */
+}
+.results {
+    max-height:150px;
+    overflow-y:auto;
+    background:#fff;    /* 搜索结果背景白色 */
+    border-radius:5px;
+    padding:5px;
+    margin-bottom:8px;
+    border:1px solid #ccc;
+    color:#000;         /* 搜索结果文字黑色 */
+}
+.item {
+    padding:4px;
+    border-bottom:1px solid #eee;
+    color:#000;         /* 每条结果文字黑色 */
+}
+.item:last-child {
+    border-bottom:none;
+}
+
+iframe{
+    width:100%;
+    height:400px;
+    border:none;
+    border-radius:5px;
+}
+
+@media(max-width:900px){
+    .nav{
+        flex-direction:column;
+        gap:10px;
+    }
+    #chatWidget{
+        width:90%;
+        right:5%;
+        bottom:10px;
+    }
+}
+</style>
+</head>
+<body>
+
+<!-- 顶部导航 -->
+<div class="top-bar">
+    <div class="nav">
+        <div class="logo">DW GLOBAL EXPRESS</div>
+        <div class="menu">
+            <a href="/">🏠 首页</a>
+            <a href="javascript:history.back();">🔙 返回</a>
+            <a href="http://www.xn--zbssc327di94a.top/8888/index.html" class="main-btn">📦 立即寄件</a>
+            <a href="/forum">💬 客户论坛</a>
+        </div>
+    </div>
+</div>
+
+<!-- 标题 -->
+<div class="header">
+    <h1>全球服务网点</h1>
+</div>
+
+<!-- 地址 -->
+<div class="address-wrapper">
+<div class="address-grid">
+
+<!-- 加拿大 -->
+<div class="address-card">
+<h3>🇨🇦 加拿大门店</h3>
+<ul>
+<li><strong>萨斯喀彻温 Saskatoon</strong><br>107 Thode Ave &nbsp; 438-228-7888</li>
+<li><strong>多伦多 Toronto</strong><br>403-543 Richmond Street West<br>89 Gerrard St E, ON M5B 1G4<br>20 Richmond St E, ON M5C 2R9<br>电话: 438-228-7888</li>
+<li><strong>万锦 Markham</strong><br>945 Halder Cres, L3R 7E9<br>电话: 438-228-7888</li>
+<li><strong>渥太华 Ottawa</strong><br>28 Beaumaris Drive, K2H 7J9<br>151 Laurier Ave E, K1N 6P5<br>1125 Colonel By Dr, K1S 5B6<br>电话: 438-228-7888</li>
+<li><strong>蒙特利尔 Montreal</strong><br>5889 Chem. de la Côte-des-Neiges, QC H3S 1Z2<br>1255 Drummond St, QC H3G 1V5<br>3600 University St, QC H3A 2B2<br>电话: 438-228-7888</li>
+<li><strong>温哥华 Vancouver</strong><br>6647 Fraser St, BC V5X 0K3<br>8888 Odlin Crescent #1390, Richmond, BC V6X 3Z8<br>9040 Blundell Rd #185, Richmond, BC V6Y 1K3<br>3381 Cambie St, BC V5Z 4R3<br>6133 University Blvd, BC V6T 1Z1<br>626 West Pender St, BC V6B 1V9<br>电话: 438-228-7888</li>
+<li><strong>卡尔加里 Calgary</strong><br>811 16 Ave NW, AB T2M 0L4<br>101 6 Ave SW, AB T2P 3P4<br>电话: 438-228-7888</li>
+<li><strong>滑铁卢 Waterloo</strong><br>256 Phillip St, ON N2L 6B6<br>133 Weber St N, ON N2J 3G9<br>电话: 438-228-7888</li>
+<li><strong>哈利法克斯 Halifax</strong><br>1083 Queen St, NS B3H 0B2<br>电话: 438-228-7888</li>
+<li><strong>金士顿 Kingston</strong><br>427 Princess St<br>电话: 438-228-7888</li>
+</ul>
+</div>
+
+<!-- 美国 -->
+<div class="address-card">
+<h3>🇺🇸 美国门店</h3>
+<ul>
+<li><strong>纽约 New York</strong>3122 union st apt 1A, Flushing, NY 11354</li>
+<li><strong>纽约 New York</strong>15 W 38th St (NYU)<br>2875 Broadway (Columbia)</li>
+<li><strong>洛杉矶 Los Angeles</strong>10940 Wilshire Blvd (UCLA)<br>3335 S Figueroa St (USC)</li>
+<li><strong>波士顿 Boston</strong>1089 Commonwealth Ave (BU)</li>
+</ul>
+</div>
+
+<!-- 英国 -->
+<div class="address-card">
+<h3>🇬🇧 英国门店</h3>
+<ul>
+<li><strong>伦敦 London</strong><br>68A Eversholt Street<br>微信：fundes</li>
+<li><strong>伦敦 South East London</strong><br>Foodie Cuisine, 40 Peckham Rd<br>微信：fundes</li>
+<li><strong>伦敦 East London</strong><br>104 Kingsland High Street<br>微信：fundes</li>
+
+<li><strong>曼彻斯特 Manchester</strong><br>Unit 2 Cariocca Business Park<br>微信：fundes</li>
+
+<li><strong>格拉斯哥 Glasgow</strong><br>9A Millennium Court, Burns Street<br>微信：fundes</li>
+
+<li><strong>利物浦 Liverpool</strong><br>82 Kempston Street, Merseyside<br>微信：fundes</li>
+
+<li><strong>哈德 Huddersfield</strong><br>Hebble View, Siddal<br>微信：fundes</li>
+<li><strong>哈德大学 Huddersfield University</strong><br>MBE Huddersfield, 6 Queen Street<br>微信：fundes</li>
+
+<li><strong>爱丁堡 Edinburgh</strong><br>66 Dalry Road<br>微信：fundes</li>
+
+<li><strong>比斯特/牛津 Bicester/Oxford</strong><br>March House 5, Murdock Road<br>微信：fundes</li>
+
+<li><strong>南安普敦 Southampton</strong><br>5 Hangovers Buildings<br>微信：No5Kuaidi（需预约）</li>
+
+<li><strong>谢菲尔德 Sheffield</strong><br>Unit 7 Sheaf Gardens, Duchess Road, S2 4BB<br>微信：fundes</li>
+
+<li><strong>纽卡斯尔 Newcastle</strong><br>25 Bath Lane, Newcastle Upon Tyne<br>微信：fundes</li>
+
+<li><strong>卡迪夫 Cardiff</strong><br>UNIT 5065 / 5070, 1&2 Davis Street, CF24 2FU<br>微信：fundes</li>
+
+<li><strong>朴茨茅斯 Portsmouth</strong><br>129-133 Queen Street（爱新鲜中国超市）<br>微信：fundes</li>
+
+<li><strong>杜伦 Durham</strong><br>79 Front Street<br>微信：fundes</li>
+
+<li><strong>考文垂 Coventry</strong><br>Unit 5-7, Wheler Road<br>微信：fundes</li>
+<li><strong>考文垂投递点 Coventry</strong><br>Tang Chinese, 114 Far Gosford Street<br>微信：fundes</li>
+
+<li><strong>莱斯特 Leicester</strong><br>35 Peacock Lane, LE1 5PY（韩品超市）<br>微信：fundes</li>
+
+<li><strong>拉夫堡 Loughborough</strong><br>60 Holywell Drive<br>微信：fundes</li>
+
+<li><strong>海威科姆 High Wycombe</strong><br>Storage Mart Industrial Estate, Knaves Beech Way<br>微信：fundes</li>
+
+<li><strong>诺丁汉 Nottingham</strong><br>26 Ingram Road, Bulwell<br>微信：fundes</li>
+
+<li><strong>伯明翰 Birmingham</strong><br>25 Rea Street<br>微信：fundes</li>
+</ul>
+</div>
+
+</div>
+</div>
+
+<!-- 联系方式 -->
+<div class="contact-box">
+<h2 style="color:#ff3300;margin-bottom:20px;">联系我们</h2>
+<p>客服电话：+1 4382287888</p>
+<p>客服邮箱：fundes@pdf-cutter.com</p>
+
+<h3 style="margin-top:30px;color:#ff3300;">在线留言</h3>
+<form>
+<input type="text" placeholder="您的姓名" required>
+<input type="email" placeholder="您的邮箱" required>
+<textarea rows="4" placeholder="请输入您的问题"></textarea>
+<button type="submit">提交信息</button>
+</form>
+</div>
+
+<div class="footer">
+© 2026 DW Global Express<br>
+Powered by Discuz! X3.4
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "DW Global Express",
+  "description": "加拿大与中国国际物流专线，空运海运快递，双清包税，全加拿大上门取件",
+  "telephone": "+1-438-228-7888",
+  "email": "fundes@pdf-cutter.com",
+  "url": "http://www.xn--zbssc327di94a.top",
+  "address": [
+    {
+      "@type": "PostalAddress",
+      "addressLocality": "Saskatoon",
+      "addressRegion": "SK",
+      "addressCountry": "CA",
+      "streetAddress": "107 Thode Ave"
+    },
+    {
+      "@type": "PostalAddress",
+      "addressLocality": "Toronto",
+      "addressRegion": "ON",
+      "addressCountry": "CA",
+      "streetAddress": "403-543 Richmond Street West"
+    },
+    {
+      "@type": "PostalAddress",
+      "addressLocality": "Vancouver",
+      "addressRegion": "BC",
+      "addressCountry": "CA",
+      "streetAddress": "6647 Fraser St"
+    },
+    {
+      "@type": "PostalAddress",
+      "addressLocality": "Montreal",
+      "addressRegion": "QC",
+      "addressCountry": "CA",
+      "streetAddress": "5889 Chem. de la Côte-des-Neiges"
+    }
+  ],
+  "areaServed": ["Canada", "China", "United States", "United Kingdom"],
+  "serviceType": "International Logistics"
+}
+</script>
+
+<div id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
+
+<!-- 浮动客服小窗 -->
+<div id="chatWidget">
+    <div id="chatHeader">
+        <span>客服小窗</span>
+        <span class="toggleBtn" onclick="toggleWidget(event)">+</span>
+    </div>
+    <div id="chatContent">
+        <div id="tabBar">
+            <div class="tabBtn active" onclick="switchTab('search')">搜索药物</div>
+            <div class="tabBtn" onclick="switchTab('ai')">AI客服</div>
+            <div class="tabBtn" onclick="switchTab('tawk')">Tawk.to</div>
+        </div>
+
+        <div id="tabSearch">
+            <input type="text" id="search" placeholder="输入药物名搜索...">
+            <div class="results" id="results"></div>
+        </div>
+
+        <div id="tabAI" style="display:none;">
+            <iframe src="http://www.xn--zbssc327di94a.top/plugin.php?id=gxyun_ai:chatpage"></iframe>
+        </div>
+
+        <div id="tabTawk" style="display:none;">
+            <iframe src="https://tawk.to/chat/61d24aa080b2296cfdd4bcf7/1foen70rk"></iframe>
+        </div>
+    </div>
+</div>
+
+<script>
+// 返回顶部
+window.onscroll=function(){
+    if(document.documentElement.scrollTop>200){
+        document.getElementById("topBtn").style.display="block";
+    }else{
+        document.getElementById("topBtn").style.display="none";
+    }
+}
+
+// 浮动小窗
+function toggleWidget(e){
+    e.stopPropagation();
+    const widget = document.getElementById("chatWidget");
+    const content = document.getElementById("chatContent");
+    if(content.style.display === "block"){
+        content.style.display = "none";
+        widget.style.height="50px";
+        e.target.textContent="+";
+    }else{
+        content.style.display = "block";
+        widget.style.height="auto";
+        e.target.textContent="—";
+    }
+}
+
+function switchTab(tab){
+    document.querySelectorAll(".tabBtn").forEach(b=>b.classList.remove("active"));
+    document.getElementById("tabSearch").style.display="none";
+    document.getElementById("tabAI").style.display="none";
+    document.getElementById("tabTawk").style.display="none";
+
+    if(tab==="search"){
+        document.querySelector(".tabBtn:nth-child(1)").classList.add("active");
+        document.getElementById("tabSearch").style.display="block";
+    }else if(tab==="ai"){
+        document.querySelector(".tabBtn:nth-child(2)").classList.add("active");
+        document.getElementById("tabAI").style.display="block";
+    }else if(tab==="tawk"){
+        document.querySelector(".tabBtn:nth-child(3)").classList.add("active");
+        document.getElementById("tabTawk").style.display="block";
+    }
+}
+
+// TXT 搜索药物
+let drugs = [];
+async function loadTXT(url){
+    const res = await fetch(url);
+    const text = await res.text();
+    return text.split(/\r?\n/).filter(line=>line.trim()!=="");
+}
+function displayResults(items, filter){
+    const container = document.getElementById("results");
+    container.innerHTML = "";
+    const filtered = items.filter(i=>i.includes(filter));
+    if(filtered.length===0){
+        container.innerHTML="<p>未找到药物</p>";
+        return;
+    }
+    filtered.forEach(i=>{
+        const div = document.createElement("div");
+        div.className="item";
+        div.textContent=i;
+        container.appendChild(div);
+    });
+}
+loadTXT("drugs.txt").then(data=>{
+    drugs = data;
+    displayResults(drugs,"");
+});
+document.getElementById("search").addEventListener("input",(e)=>{
+    const value = e.target.value.trim();
+    displayResults(drugs,value);
+});
+</script>
+
+</body>
+</html>
