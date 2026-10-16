@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>到  位  速  递  EXPRESS - 到位速递加东干线调度中枢 </title>
+    <style>
+        :root {
+            --global-bg: #0b0e14;
+            --panel-bg: #131822;
+            --panel-border: #1f293d;
+            --accent-gold: #f59e0b;
+            --accent-cyan: #0ea5e9;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --success-green: #10b981;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: var(--global-bg); color: var(--text-primary); line-height: 1.5; padding: 15px; }
+        
+        .container { max-width: 1480px; margin: 0 auto; }
+
+        /* 顶部超大 LOGO 招牌区域 */
+        .hero-logo-banner {
+            background: linear-gradient(135deg, #131822, #0d121b, #1a2230);
+            border: 2px solid var(--accent-gold);
+            border-radius: 12px;
+            padding: 35px 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 15px 35px rgba(245, 158, 11, 0.15), inset 0 0 30px rgba(0,0,0,0.6);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .huge-logo-box {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #000;
+            font-size: 38px;
+            font-weight: 900;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(245,158,11,0.4);
+            letter-spacing: -2px;
+        }
+
+        .logo-text-group h1 {
+            font-size: 36px;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+
+        .logo-text-group h1 span {
+            color: var(--accent-gold);
+            text-shadow: 0 0 15px rgba(245,158,11,0.5);
+        }
+
+        .logo-text-group p {
+            font-size: 13px;
+            color: var(--accent-cyan);
+            letter-spacing: 2px;
+            margin-top: 6px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .banner-right-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        @media(max-width: 900px) {
+            .hero-logo-banner { flex-direction: column; align-items: flex-start; }
+            .banner-right-info { align-items: flex-start; }
+            .logo-text-group h1 { font-size: 26px; }
+        }
+
+        .system-status { display: flex; align-items: center; gap: 15px; font-size: 13px; font-family: monospace; }
+        .live-indicator { display: flex; align-items: center; gap: 6px; color: var(--success-green); font-weight: bold; background: rgba(16,185,129,0.1); padding: 6px 12px; border-radius: 4px; border: 1px solid rgba(16,185,129,0.3); }
+        .dot { width: 8px; height: 8px; background: var(--success-green); border-radius: 50%; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
+        
+        .countdown-badge { background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); padding: 5px 12px; border-radius: 4px; border: 1px solid rgba(245, 158, 11, 0.4); font-weight: bold; }
+        .btn-action { background: var(--accent-gold); color: #000; border: none; padding: 10px 18px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 12px; transition: opacity 0.2s; text-transform: uppercase; }
+        .btn-action:hover { opacity: 0.85; }
+
+        /* 车站机械拍照翻页大屏 */
+        .station-board {
+            background-color: #07090e;
+            border: 2px solid var(--panel-border);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 20px 40px rgba(0,0,0,0.7);
+            margin-bottom: 25px;
+        }
+
+        .board-table-header {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1.2fr 1.2fr 1.2fr 1.3fr;
+            background: #1a2230;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .board-rows-container { max-height: 500px; overflow-y: auto; padding-right: 4px; }
+        .board-rows-container::-webkit-scrollbar { width: 5px; }
+        .board-rows-container::-webkit-scrollbar-thumb { background: #2a3447; border-radius: 3px; }
+
+        .train-row {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1.2fr 1.2fr 1.2fr 1.3fr;
+            gap: 10px;
+            align-items: center;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            padding: 11px 15px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        .train-row:hover { background: #1a2230; border-color: #334155; }
+
+        @media(max-width: 900px) {
+            .board-table-header, .train-row { grid-template-columns: 1fr 1.5fr 1fr; font-size: 11px; }
+            .hide-mobile { display: none; }
+        }
+
+        /* 复古机械翻页LED格子 */
+        .flip-cell {
+            background: #000;
+            color: var(--accent-gold);
+            font-family: monospace;
+            font-weight: bold;
+            padding: 6px 10px;
+            border-radius: 3px;
+            border: 1px solid #222;
+            text-align: center;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.9);
+            letter-spacing: 1px;
+        }
+        .flip-cell.flipping { transform: scale(0.95); opacity: 0.4; background: #2a0f02; }
+
+        .truck-id { font-weight: bold; color: var(--accent-cyan); font-family: monospace; }
+        .route-path { color: #fff; font-weight: 600; text-align: left; padding-left: 10px; }
+        .freq-tag { background: rgba(14, 165, 233, 0.15); color: var(--accent-cyan); padding: 3px 8px; border-radius: 3px; font-size: 11px; display: inline-block; border: 1px solid rgba(14,165,233,0.3); font-weight: 600; }
+        .status-running { color: var(--success-green); font-weight: bold; }
+
+        /* 下面板：权威物流询价系统 */
+        .panel-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        @media(max-width: 900px) { .panel-grid { grid-template-columns: 1fr; } }
+
+        .card { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 10px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
+        .card h2 { font-size: 15px; margin-bottom: 20px; color: var(--accent-gold); border-left: 3px solid var(--accent-cyan); padding-left: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        @media(max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+        
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-size: 11px; font-weight: 600; margin-bottom: 6px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-group select, .form-group input { padding: 11px; background: #0b0e14; border: 1px solid #2a3447; color: #fff; border-radius: 6px; font-size: 13px; outline: none; transition: border-color 0.2s; }
+        .form-group select:focus, .form-group input:focus { border-color: var(--accent-cyan); }
+
+        .btn-submit { background: linear-gradient(135deg, #0ea5e9, #0284c7); color: #fff; border: none; padding: 14px; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; transition: opacity 0.2s; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(14,165,233,0.3); }
+        .btn-submit:hover { opacity: 0.9; }
+
+        .result-box { display: none; background: #064e3b; border: 1px solid #059669; padding: 15px; border-radius: 6px; margin-top: 20px; font-size: 13px; color: #ecfdf5; box-shadow: inset 0 2px 6px rgba(0,0,0,0.3); }
+
+        .cities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(115px, 1fr)); gap: 8px; max-height: 250px; overflow-y: auto; padding-right: 4px; }
+        .city-tag { background: #0b0e14; padding: 7px 10px; text-align: center; border-radius: 4px; font-size: 11px; border: 1px solid var(--panel-border); color: var(--text-secondary); font-weight: 500; }
+        .city-tag.highlight { background: #431407; border-color: #ea580c; color: #ffedd5; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 顶部超大 LOGO 招牌区域 -->
+    <div class="hero-logo-banner">
+        <div class="huge-logo-box">
+            <div class="logo-icon">到</div>
+            <div class="logo-text-group">
+                <h1>到位速递 <span>EXPRESS</span></h1>
+                <p>到位速递 · 加东干线卡车运输专线调度中心</p>
+            </div>
+        </div>
+        <div class="banner-right-info">
+            <div class="system-status">
+                <div class="live-indicator"><span class="dot"></span> <span id="client-live-time">正在校准客户电脑时间...</span></div>
+                <span> <span class="countdown-badge" id="countdown">10</span>s</span>
+            </div>
+            <button class="btn-action" onclick="manualRefresh()">刷新</button>
+        </div>
+    </div>
+
+    <!-- 发车时间 -->
+    <div class="station-board">
+        <div class="board-table-header">
+            <div>车次与对开方向</div>
+            <div style="text-align: left; padding-left: 10px;">到位速递干线路线</div>
+            <div>班次频次</div>
+            <div class="hide-mobile">发车/客户本地日期时刻</div>
+            <div class="hide-mobile">承载车型</div>
+            <div>实时动态状态</div>
+        </div>
+
+        <div class="board-rows-container" id="board-rows">
+            <!-- 动态生成 -->
+        </div>
+    </div>
+
+    <!-- 下方权威物流交互面板 -->
+    <div class="panel-grid">
+        <div class="card">
+            <h2>📦 到位速递专线合规询价中枢 </h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>加东始发地 (Origin)</label>
+                    <select id="origin">
+                        <option value="Toronto">多伦多主仓 (Toronto Hub)</option>
+                        <option value="Whitby " selected>惠特比集货点 (Whitby / 惠特米勒)</option>
+                        <option value="Montreal">蒙特利尔分拨中心 (Montreal)</option>
+                        <option value="Ottawa">渥太华转运仓 (Ottawa)</option>
+                        <option value="Quebec City">魁北克城 (Quebec City)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>加东目的地 (Destination)</label>
+                    <select id="destination">
+                        <option value="Montreal" selected>蒙特利尔 (Montreal)</option>
+                        <option value="Toronto">多伦多 (Toronto)</option>
+                        <option value="Whitby (惠特米勒)">惠特比 (Whitby / 惠特米勒)</option>
+                        <option value="Ottawa">渥太华 (Ottawa)</option>
+                        <option value="Quebec City">魁北克城 (Quebec City)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>服务模式 (Service Level)</label>
+                    <select id="service">
+                        <option value="ltl">零担拼箱快运 (LTL 散货保底)</option>
+                        <option value="ftl">整车专车直达 (FTL 53尺箱)</option>
+                        <option value="express">当日加急短驳 (Express)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>计费重量 / 体积 (KG / CBM)</label>
+                    <input type="number" id="weight" value="350" min="1">
+                </div>
+            </div>
+            <button class="btn-submit" onclick="calculateTruckShipping()">生成到位速递官方合规报价单</button>
+            
+            <div class="result-box" id="resultBox">
+                <strong>✅ 到位速递高阶合规报价生成成功：</strong>
+                <p id="resultText" style="margin-top: 6px;"></p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📍 到位速递加东服务网点矩阵 (3万组合)</h2>
+            <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">东部全境高频双向对开网络实时轮换：</p>
+            <div class="cities-grid" id="cities-container">
+                <!-- 动态填充 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const citiesList = [
+        "Toronto", "Montreal", "Ottawa", "Whitby (惠特米勒)", "Oshawa", "Ajax", 
+        "Pickering", "Markham", "Scarborough", "Mississauga", "Quebec City", 
+        "Kingston", "Hamilton", "London", "Kitchener", "Windsor", "Sudbury", 
+        "Sherbrooke", "Trois-Rivières", "Laval", "Gatineau", "Longueuil", 
+        "Brossard", "Barrie", "St. Catharines", "Newmarket", "Vaughan", 
+        "Richmond Hill", "Brampton", "Burlington", "Oakville", "Lévis", 
+        "Saguenay", "Terrebonne", "Saint-Jean-sur-Richelieu", "Repentigny", 
+        "Drummondville", "Granby", "Saint-Jérôme", "Mirabel"
+    ];
+
+    const truckTypesList = [
+        "53尺到位速递全封闭干线大卡", "26尺尾板厢式货车", "48尺标箱冷藏卡", 
+        "36尺中型往返货车", "24尺城际快运卡", "53尺双A双桥大卡", "16尺短驳小卡"
+    ];
+
+    const statusList = [
+        "🟢 到位速递去程高速对开中", "🔵 返程满载疾驰中", "🟡 当日折返整备中", 
+        "🟢 准点到达分拨中心", "🟠 晚班对开候命中", "🟢 杜兰区短驳执行中"
+    ];
+
+    function renderCities() {
+        const container = document.getElementById('cities-container');
+        let html = '';
+        citiesList.forEach(c => {
+            let isHighlight = c.includes('Whitby') ? 'highlight' : '';
+            html += `<div class="city-tag ${isHighlight}">📍 ${c}</div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    // 发车班次日期
+    function generateBatchRows() {
+        const container = document.getElementById('board-rows');
+        let html = '';
+        
+        // 获取客户电脑当前的本地时间对象
+        const clientNow = new Date();
+        
+        for(let i = 1; i <= 16; i++) {
+            let originIdx = Math.floor(Math.random() * citiesList.length);
+            let destIdx;
+            do {
+                destIdx = Math.floor(Math.random() * citiesList.length);
+            } while(destIdx === originIdx);
+
+            let cityA = citiesList[originIdx];
+            let cityB = citiesList[destIdx];
+
+            let isReverse = Math.random() > 0.5;
+            let origin = isReverse ? cityB : cityA;
+            let dest = isReverse ? cityA : cityB;
+            let directionTag = isReverse ? "【返程对开】" : "【去程正向】";
+
+            if(i === 1) {
+                origin = "Toronto";
+                dest = "Montreal";
+                directionTag = "【到位主干线对开】";
+            } else if(i === 2) {
+                origin = "Whitby (惠特米勒)";
+                dest = "Toronto";
+                directionTag = "【惠特比短驳对开】";
+            }
+
+            let truckId = `DW-${Math.floor(Math.random() * 89999) + 10000}`;
+            let truck = truckTypesList[Math.floor(Math.random() * truckTypesList.length)];
+            let status = statusList[Math.floor(Math.random() * statusList.length)];
+            
+            // 基于客户电脑时间，往后随机滚动 0 到 3 天作为发车日
+            let shiftDays = Math.floor(Math.random() * 4);
+            let rowDate = new Date(clientNow.getTime() + shiftDays * 24 * 60 * 60 * 1000);
+            let rMonth = rowDate.getMonth() + 1;
+            let rDay = rowDate.getDate();
+            let randomHour = String(Math.floor(Math.random() * 12) + 8).padStart(2, '0');
+            let timeStr = `${rMonth}月${rDay}日 ${randomHour}:00`;
+
+            html += `
+                <div class="train-row">
+                    <div class="truck-id">${truckId}<br><span style="font-size:10px; color:var(--accent-gold);">${directionTag}</span></div>
+                    <div class="route-path">${origin} ⇄ ${dest}</div>
+                    <div><span class="freq-tag">一天一趟 (每日对开)</span></div>
+                    <div class="hide-mobile flip-cell">${timeStr}</div>
+                    <div class="hide-mobile" style="font-size:12px; color:var(--text-secondary);">${truck}</div>
+                    <div class="status-running">${status}</div>
+                </div>
+            `;
+        }
+        container.innerHTML = html;
+    }
+
+    // 实时同步客户电脑的本地时间到顶部状态栏
+    function updateClientTimeDisplay() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth() + 1;
+        const day = now.getDate();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        
+        document.getElementById('client-live-time').innerText = `客户端本地时间: ${year}年${month}月${day}日 ${hours}:${minutes}:${seconds}`;
+    }
+
+    let countdownTime = 15;
+    const countdownEl = document.getElementById('countdown');
+
+    setInterval(() => {
+        countdownTime--;
+        updateClientTimeDisplay(); // 每秒刷新客户本地时钟
+        if(countdownTime <= 0) {
+            countdownTime = 15;
+            triggerFlipAnimation();
+        }
+        countdownEl.innerText = countdownTime;
+    }, 1000);
+
+    function manualRefresh() {
+        countdownTime = 15;
+        triggerFlipAnimation();
+    }
+
+    function triggerFlipAnimation() {
+        const rows = document.querySelectorAll('.train-row');
+        rows.forEach(row => {
+            row.classList.add('flipping');
+        });
+
+        setTimeout(() => {
+            generateBatchRows();
+            rows.forEach(row => {
+                row.classList.remove('flipping');
+            });
+        }, 400);
+    }
+
+    // 权威防低价校准算法
+    function calculateTruckShipping() {
+        const origin = document.getElementById('origin').value;
+        const dest = document.getElementById('destination').value;
+        const weight = parseFloat(document.getElementById('weight').value) || 350;
+        const service = document.getElementById('service').value;
+
+        if(origin === dest) {
+            alert('始发地和目的地不能相同！');
+            return;
+        }
+
+        let baseRatePerKg = 0.85; 
+        let baseMinFee = 220.00;   
+        let routeDesc = `${origin} ⇄ ${dest} (到位速递加东双向干线)`;
+
+        if(origin.includes('Whitby') || dest.includes('Whitby')) {
+            baseRatePerKg = 0.95;
+            baseMinFee = 180.00;
+            routeDesc = `惠特比 (Whitby / 惠特米勒) ⇄ 到位速递全境短驳`;
+        }
+
+        let calculatedFee = weight * baseRatePerKg;
+        let finalFee = Math.max(calculatedFee, baseMinFee);
+
+        if(service === 'ftl') {
+            finalFee = 2650.00; 
+        } else if(service === 'express') {
+            finalFee = finalFee * 1.45; 
+        }
+
+        const box = document.getElementById('resultBox');
+        box.style.display = 'block';
+        document.getElementById('resultText').innerHTML = `
+            专线通道：<b>${routeDesc}</b><br>
+            班次调度：<span style="color:#fde047; font-weight:bold;">一天一趟每日对开（已同步客户本地日期舱位）</span><br>
+            到位速递官方合规报价（含防低价保底）：<span style="font-size:16px; font-weight:bold; color:#4ade80;">$${finalFee.toFixed(2)} CAD</span> (包含干线高速对开、燃油附加与末端送货)
+        `;
+    }
+
+    window.onload = function() {
+        updateClientTimeDisplay();
+        renderCities();
+        generateBatchRows();
+    };
+</script>
+
+</body>
+</html>
