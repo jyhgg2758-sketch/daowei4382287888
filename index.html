@@ -3,455 +3,558 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>到位速遞 Express | 全球國際物流回國行李、加拿大、美國、英國、澳洲全方位的國際速遞、酒店取件、幹線運輸及清關保障服務 到位速遞全球運輸</title>
-    <style>
-<script>
-let searchData = [];
-
-// 异步加载服务器上的 txt 文件
-async function loadSearchData(url){
-    try {
-        const res = await fetch(url);
-        const text = await res.text();
-        // 按行分割，过滤掉空行
-        searchData = text.split(/\r?\n/).filter(line => line.trim() !== "");
-        displayResults(searchData, "");
-    } catch (error) {
-        console.error("加载 TXT 文件失败", error);
-    }
-}
-
-function displayResults(items, filter){
-    const container = document.getElementById("results");
-    container.innerHTML = "";
-    // 如果有过滤词就筛选，没有就默认显示前 20 条（避免一次性渲染太多卡顿）
-    const filtered = items.filter(i => i.toLowerCase().includes(filter.toLowerCase()));
-    
-    if(filtered.length === 0){
-        container.innerHTML = "<p style='font-size:12px; color:#666;'>未找到相关内容</p>";
-        return;
-    }
-    
-    // 限制最多显示 50 条，提升性能
-    filtered.slice(0, 50).forEach(i => {
-        const div = document.createElement("div");
-        div.className = "item";
-        div.style.padding = "6px 8px";
-        div.style.borderBottom = "1px solid #eee";
-        div.style.fontSize = "13px";
-        div.textContent = i;
-        container.appendChild(div);
-    });
-}
-
-// 页面加载时调用您的 txt 文件（请确保同目录下有该文件）
-loadSearchData("drugs.txt");
-
-// 监听输入框搜索
-document.getElementById("search").addEventListener("input", (e) => {
-    const value = e.target.value.trim();
-    displayResults(searchData, value);
-});
-</script>
-
-
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body { font-family: Arial, Helvetica, sans-serif; background: #0d1117; color: #fff; line-height: 1.5; }
-
-
-
-
-        /* 导航 */
-        header {
-            position: fixed; top: 0; left: 0; width: 100%;
-            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 18px 6%; z-index: 999; border-bottom: 1px solid #222;
-        }
-        .logo { font-size: 24px; font-weight: bold; color: #ff2d2d; letter-spacing: 1px; }
-        .logo span { color: #f59e0b; }
-        nav { display: flex; gap: 20px; }
-        nav a { color: white; text-decoration: none; transition: .3s; font-size: 14px; }
-        nav a:hover { color: #ff3b3b; }
-
-        /* Hero */
-        .hero {
-            height: 60vh; display: flex; align-items: center; justify-content: center;
-            text-align: center; padding: 20px;
-            background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url("https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1600&q=80");
-            background-size: cover; background-position: center;
-        }
-        .hero h1 { font-size: 38px; margin-bottom: 15px; color: #fff; }
-        .hero p { font-size: 16px; color: #ddd; }
-
-        /* 车站大屏区 */
-        .board-section { padding: 40px 5% 20px 5%; background: #0b0e14; }
-        .station-board {
-            background-color: #07090e; border: 2px solid #222; border-radius: 12px; padding: 15px;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.9), 0 20px 40px rgba(0,0,0,0.7);
-        }
-        .board-table-header {
-            display: grid; grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1.2fr;
-            background: #1a2230; padding: 10px; border-radius: 6px; font-size: 11px;
-            font-weight: 700; color: #f59e0b; text-transform: uppercase; margin-bottom: 8px; text-align: center;
-        }
-        .board-rows-container { max-height: 350px; overflow-y: auto; }
-        .train-row {
-            display: grid; grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1.2fr; gap: 8px; align-items: center;
-            background: #161b22; border: 1px solid #222; padding: 10px; border-radius: 6px; margin-bottom: 6px; font-size: 12px; text-align: center;
-        }
-        .flip-cell { background: #000; color: #f59e0b; font-family: monospace; font-weight: bold; padding: 5px 8px; border-radius: 3px; border: 1px solid #222; }
-        .truck-id { font-weight: bold; color: #0ea5e9; font-family: monospace; }
-        .route-path { color: #fff; font-weight: 600; text-align: left; padding-left: 5px; }
-        .freq-tag { background: rgba(14, 165, 233, 0.15); color: #0ea5e9; padding: 2px 6px; border-radius: 3px; font-size: 10px; }
-        .status-running { color: #10b981; font-weight: bold; }
-
-        /* 3299个按钮生成区（地下/底部区域） */
-        .buttons-section { padding: 40px 5%; background: #0d1117; }
-        .buttons-container {
-            background: #161b22; border: 1px solid #222; border-radius: 12px; padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .buttons-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
-        .buttons-header h3 { color: #f59e0b; font-size: 20px; }
-        .badge { background: #ff2d2d; color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; }
-        
-        .search-box {
-            width: 100%; padding: 12px 18px; font-size: 15px; background: #0b0e14; border: 1px solid #333;
-            color: #fff; border-radius: 8px; margin-bottom: 20px; outline: none; transition: border 0.3s;
-        }
-        .search-box:focus { border-color: #ff2d2d; }
-
-        /* 3299个网格按钮面板 */
-        .grid-buttons {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 8px;
-            max-height: 500px;
-            overflow-y: auto;
-            padding-right: 5px;
-        }
-        .grid-buttons::-webkit-scrollbar { width: 6px; }
-        .grid-buttons::-webkit-scrollbar-thumb { background: #ff2d2d; border-radius: 3px; }
-
-        .btn-item {
-            display: block;
-            padding: 10px 6px;
-            background: #21262d;
-            color: #58a6ff;
-            text-align: center;
-            text-decoration: none;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 500;
-            transition: all 0.2s;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .btn-item:hover {
-            background: #ff2d2d;
-            color: #fff;
-            border-color: #ff2d2d;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(255,45,45,0.3);
-        }
-
-        footer { background: #000; padding: 20px; text-align: center; color: #888; font-size: 12px; }
-    </style>
-</head>
-<body>
-
-<!-- 顶级导航 -->
-<header>
-    <div class="logo">到位速遞<span>EXPRESS</span></div>
-    <nav>
-        <a href="https://vip.xn--zbssc327di94a.top/indexs.html">运输须知</a>
-        <a href="https://vip.xn--zbssc327di94a.top">全球网络</a>
-        <a href="https://xn--zbssc327di94a.top/contact.html">联系我们</a>
-        <a href="../" class="nav-btn">返回上级目录</a>
-    </nav>
-</header>
-
-<!-- 视觉大图区 -->
-<section class="hero">
-    <div class="hero-content">
-        <h1>全球國際物流 <br><span>加東幹線與跨境專線智能調度</span></h1>
-        <p>提供中國、加拿大、美國、英國、澳洲全方位的國際速遞、酒店取件、幹線運輸及清關保障服務。</p>
-        <div class="hero-btns">
-            <a href="#board" class="btn-main">到位速遞全球空運互轉</a>
-            <a href="#network" class="btn-sub">全球節點網絡</a>
-        </div>
-    </div>
-</section>
-
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>到位速遞卡車運輸調度中心</title>
-    <!-- 引入 Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 引入 Inter 字体与 FontAwesome 图标 -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>到位速递 (DaoWei Express) - 全球及北美加美跨境物流与城市分站矩阵</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome 图标库 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        /* 毛玻璃效果 */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-        }
-        .dark .glass-panel {
-            background: rgba(15, 23, 42, 0.75);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        /* iframe 容器过渡效果 */
-        .preview-frame-wrapper {
-            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        .glass-header { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .buttons-section { max-width: 1280px; margin: 40px auto; padding: 20px; background: #ffffff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .buttons-container { width: 100%; }
+        .buttons-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #f97316; padding-bottom: 10px; }
+        .buttons-header h3 { font-size: 18px; font-weight: bold; color: #1e293b; }
+        .badge { background: #ffedd5; color: #c2410c; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+        .search-box { width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 12px; font-size: 14px; outline: none; margin-bottom: 20px; transition: all 0.3s; }
+        .search-box:focus { border-color: #f97316; box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1); }
+        .grid-buttons { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; max-height: 280px; overflow-y: auto; padding-right: 5px; }
+        .btn-item { background: #f8fafc; border: 1px solid #e2e8f0; padding: 8px 10px; text-align: center; border-radius: 8px; font-size: 12px; color: #334155; text-decoration: none; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+        .btn-item:hover { background: #f97316; color: white; border-color: #f97316; transform: translateY(-1px); }
+        .train-row { display: grid; grid-template-columns: 1fr 2fr 1fr 1fr 1.5fr 1.5fr; gap: 10px; align-items: center; background: rgba(30, 41, 59, 0.7); padding: 10px 15px; border-radius: 8px; border: 1px solid rgba(51, 65, 85, 0.5); font-size: 13px; color: white; }
+        .truck-id { font-weight: bold; color: #fb923c; font-family: monospace; }
+        .route-path { font-weight: 600; }
+        .freq-tag { background: rgba(249, 115, 22, 0.2); color: #fb923c; padding: 2px 8px; border-radius: 4px; font-size: 11px; }
+        .status-running { color: #4ade80; font-weight: 600; }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 min-h-screen text-slate-100 flex flex-col antialiased selection:bg-blue-500 selection:text-white">
+<body class="bg-gray-50 text-gray-900 font-sans antialiased">
 
-    <!-- 顶部导航栏 -->
-    <header class="w-full border-b border-white/10 glass-panel sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <!-- 顶部滚动公告栏 -->
+    <div class="bg-amber-600 text-white text-xs font-semibold py-2 px-4 text-center tracking-wide flex items-center justify-center space-x-2">
+        <i class="fa-solid fa-bullhorn"></i>
+        <span><strong>到位速递公告：</strong> 蒙特利尔全岛及南岸 Brossard 同城急送限时特惠，加美跨境清关转运专线全场 8.5 折！</span>
+    </div>
+
+    <!-- 导航栏 -->
+    <header class="sticky top-0 z-50 glass-header border-b border-gray-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/30">
-                    <i class="fa-solid fa-truck-fast text-white text-lg"></i>
+                <div class="bg-gradient-to-tr from-amber-600 to-orange-600 text-white p-2.5 rounded-2xl shadow-lg">
+                    <i class="fa-solid fa-truck-fast text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-lg tracking-tight bg-gradient-to-r from-white via-slate-200 to-blue-200 bg-clip-text text-transparent">
-                        到位速遞 · 卡車運輸調度中心
-                    </h1>
-                    <p class="text-xs text-slate-400">Smart Logistics Dispatch & Control Center</p>
+                    <span class="text-2xl font-black tracking-tight bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">到位速递</span>
+                    <span class="block text-xs font-medium text-gray-500">DaoWei Express · 全球 10 万城市与加美跨境网络</span>
                 </div>
             </div>
+                    
+            <!-- 中间调度提醒 -->
+            <div class="hidden xl:flex items-center space-x-2 bg-orange-50 border border-orange-100 px-4 py-2 rounded-full text-xs font-semibold text-orange-600 shadow-inner">
+                <span class="w-2 h-2 rounded-full bg-orange-600 animate-ping"></span>
+                <span>全球实时调度中：<span id="ticker-route" class="underline">加载中...</span></span>
+                <span id="ticker-countdown" class="bg-orange-600 text-white px-2 py-0.5 rounded-full text-[10px]">10s</span>
+            </div>
 
-            <!-- 系统状态指标 -->
-            <div class="hidden md:flex items-center space-x-6 text-xs font-medium text-slate-300">
-                <div class="flex items-center space-x-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span class="text-emerald-400">系统运行正常</span>
-                </div>
-                <div class="flex items-center space-x-1.5 bg-white/5 border border-white/10 px-3 py-1.5 rounded-full">
-                    <i class="fa-solid fa-satellite-dish text-blue-400"></i>
-                    <span>实时节点联通</span>
-                </div>
+            <!-- 右侧功能按钮区（已预留【邮寄须知】与【联系我们】位置） -->
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <!-- 邮寄须知链接（可按需修改 href 指向您的具体页面，如 shipping-guide.html） -->
+                <a href="shipping-guide.html" class="text-gray-700 hover:text-orange-600 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center">
+                    <i class="fa-solid fa-book-open mr-1 text-orange-600"></i> 邮寄须知
+                </a>
+
+                <!-- 联系我们链接（可指向 contact.html，或直接唤起在线客服） -->
+                <a href="contact.html" class="text-gray-700 hover:text-orange-600 px-3 py-2 rounded-xl text-xs font-bold transition hidden sm:flex items-center">
+                    <i class="fa-solid id-card mr-1 text-orange-600"></i> 联系我们
+                </a>
+
+                <!-- 运费估算按钮 -->
+                <button onclick="openEstimatorModal()" class="bg-gray-900 hover:bg-orange-600 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition shadow-md flex items-center cursor-pointer">
+                    <i class="fa-solid fa-calculator mr-1"></i> 运费估算
+                </button>
+
+                <!-- 在线客服按钮 -->
+                <a href="https://tawk.to/chat/61d24aa080b2296cfdd4bcf7/1foen70rk" target="_blank" class="bg-orange-600 hover:bg-orange-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition shadow-md flex items-center">
+                    <i class="fa-solid fa-headset mr-1"></i> 客服
+                </a>
             </div>
         </div>
     </header>
 
-    <!-- 主体展示区域 -->
-    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col">
+    <!-- 英雄区 (Hero Section) -->
+    <section class="relative bg-gray-900 text-white py-24 overflow-hidden">
+        <div class="absolute inset-0 opacity-45">
+            <img id="hero-bg-img" src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1920&q=80" alt="DaoWei Logistics Hub" class="w-full h-full object-cover transition-all duration-1000">
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent"></div>
         
-        <!-- 控制与视图切换面板 -->
-        <div class="glass-panel rounded-2xl p-4 mb-6 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <span id="hero-badge" class="inline-block bg-orange-600 text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-4 shadow-lg">加美跨境与全球华人首选物流清关专家</span>
+            <h1 id="hero-title" class="text-4xl sm:text-6xl font-black tracking-tight mb-4 drop-shadow-lg">让每一次跨国与同城交付准时到位</h1>
+            <p id="hero-desc" class="max-w-2xl mx-auto text-lg text-gray-200 mb-8 font-light">连接北美加美全境及全球 城市网点，专为海外华人、留学生与跨境电商提供安全、快捷的清关转运与货运服务。</p>
+
+            <!-- 搜索与筛选面板 -->
+            <div class="max-w-4xl mx-auto bg-white p-4 rounded-2xl shadow-2xl flex flex-col md:flex-row gap-3 text-gray-800">
+                <div class="flex-1 flex items-center px-4 py-3 bg-gray-50 rounded-xl border border-gray-100">
+                    <i class="fa-solid fa-location-dot text-orange-600 mr-3"></i>
+                    <select id="filter-zone" onchange="filterServices()" class="w-full bg-transparent outline-none text-sm font-semibold cursor-pointer">
+                        <option value="">全球网点及加美全境</option>
+                    </select>
+                </div>
+                <div class="flex-1 flex items-center px-4 py-3 bg-gray-50 rounded-xl border border-gray-100">
+                    <i class="fa-solid fa-box-open text-orange-600 mr-3"></i>
+                    <select id="filter-category" onchange="filterServices()" class="w-full bg-transparent outline-none text-sm font-semibold cursor-pointer">
+                        <option value="">所有服务分类</option>
+                        <option value="同城快递">同城快递与急送</option>
+                        <option value="留学生搬家">留学生行李寄存搬家</option>
+                        <option value="国际转运">加美跨境与回国海空运</option>
+                        <option value="商业B2B">商业大宗与清关配送</option>
+                        <option value="机场接送">机场接送与行李随行</option>
+                    </select>
+                </div>
+                <button onclick="filterServices()" class="bg-orange-600 hover:bg-orange-700 text-white font-bold px-8 py-3 rounded-xl transition flex items-center justify-center shadow-md cursor-pointer">
+                    <i class="fa-solid fa-magnifying-glass mr-2"></i> 检索全球网点
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 车站/班次大屏动态监控专区 -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+        <div class="bg-slate-900 rounded-2xl p-6 shadow-xl border border-slate-800">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-white font-bold text-lg flex items-center"><i class="fa-solid fa-truck-fast text-orange-500 mr-2"></i> 加美跨境与同城干线车</h3>
+                <span class="text-xs text-slate-400">海关清关顺利 🟢</span>
+            </div>
+            <div id="board-rows" class="space-y-2"></div>
+        </div>
+    </section>
+
+    <!-- 主体产品/服务网格区 -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4">
+            <div>
+                <h2 class="text-2xl font-bold tracking-tight">全球 物流专线与服务网络</h2>
+                <p class="text-sm text-gray-500">当前符合条件的路线共 <span id="service-count" class="font-semibold text-orange-600">100000</span> 项（每页显示 200 项，共 <span id="total-pages-label" class="font-semibold text-orange-600">500</span> 页）</p>
+            </div>
             
-            <!-- 标题说明 -->
-            <div class="flex items-center space-x-3 w-full sm:w-auto">
-                <div class="p-2.5 bg-blue-500/20 text-blue-400 rounded-xl">
-                    <i class="fa-solid fa-desktop"></i>
-                </div>
-                <div>
-                    <h2 class="font-semibold text-slate-100 text-sm sm:text-base">到位卡派发车时刻表</h2>
-                    <p class="text-xs text-slate-400">支持多终端响应式适配</p>
-                </div>
-            </div>
-
-            <!-- 设备模拟切换按钮组 -->
-            <div class="flex items-center bg-slate-900/60 p-1.5 rounded-xl border border-white/10 w-full sm:w-auto justify-center">
-                <button onclick="setDeviceMode('desktop')" id="btn-desktop" class="flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-medium transition-all flex items-center justify-center space-x-2 bg-blue-600 text-white shadow-md shadow-blue-600/30">
-                    <i class="fa-solid fa-laptop"></i>
-                    <span>电脑全屏</span>
-                </button>
-                <button onclick="setDeviceMode('tablet')" id="btn-tablet" class="flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-medium transition-all flex items-center justify-center space-x-2 text-slate-400 hover:text-white hover:bg-white/5">
-                    <i class="fa-solid fa-tablet-screen-button"></i>
-                    <span>平板视窗</span>
-                </button>
-                <button onclick="setDeviceMode('mobile')" id="btn-mobile" class="flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-medium transition-all flex items-center justify-center space-x-2 text-slate-400 hover:text-white hover:bg-white/5">
-                    <i class="fa-solid fa-mobile-screen"></i>
-                    <span>手机模拟</span>
-                </button>
+            <!-- 运单号追踪快捷栏 -->
+            <div class="flex items-center space-x-3 bg-white border border-gray-200 rounded-2xl p-2 shadow-sm">
+                <i class="fa-solid fa-barcode text-orange-600 ml-2"></i>
+                <input type="text" id="quick-track-input" placeholder="输入运单号 (例: DW8888)" class="text-xs outline-none bg-gray-50 px-3 py-2 rounded-lg border border-gray-100 w-40">
+                <button onclick="simulateTracking()" class="bg-gray-900 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-orange-600 transition cursor-pointer">运单追踪</button>
             </div>
         </div>
 
-        <!-- iframe 响应式展示舞台 -->
-        <div class="flex-1 flex items-center justify-center w-full">
-            <div id="frame-container" class="preview-frame-wrapper w-full h-[650px] bg-slate-950/80 rounded-2xl border border-white/15 shadow-2xl overflow-hidden flex flex-col relative max-w-full">
-                
-                <!-- 模拟浏览器顶部栏 -->
-                <div class="h-10 bg-slate-900/90 border-b border-white/10 flex items-center px-4 justify-between select-none">
-                    <div class="flex items-center space-x-2">
-                        <div class="w-3 h-3 rounded-full bg-rose-500/80 hover:bg-rose-500 cursor-pointer"></div>
-                        <div class="w-3 h-3 rounded-full bg-amber-500/80 hover:bg-amber-500 cursor-pointer"></div>
-                        <div class="w-3 h-3 rounded-full bg-emerald-500/80 hover:bg-emerald-500 cursor-pointer"></div>
-                    </div>
-                    <div class="bg-slate-800/80 border border-white/5 px-4 py-1 rounded-md text-[11px] text-slate-400 flex items-center space-x-2 max-w-xs truncate">
-                        <i class="fa-solid fa-lock text-[10px] text-emerald-400"></i>
-                        <span class="truncate">https://www.xn--zbssc327di94a.top/vip.html</span>
-                    </div>
-                    <div class="flex items-center space-x-3 text-slate-400 text-xs">
-                        <button onclick="reloadFrame()" title="刷新子页面" class="hover:text-white transition-colors"><i class="fa-solid fa-rotate-right"></i></button>
-                        <a href="https://xn--zbssc327di94a.top/vip.html" target="_blank" title="新窗口打开" class="hover:text-white transition-colors"><i class="fa-solid fa-up-right-from-square"></i></a>
-                    </div>
-                </div>
-
-                <!-- iframe 核心主体 -->
-                <div class="flex-1 w-full relative bg-slate-950">
-                    <iframe 
-                        id="dispatch-frame"
-                        src="https://xn--zbssc327di94a.top/vip.html" 
-                        class="w-full h-full border-none transition-all duration-300"
-                        title="到位速递卡车运输调度中心子系统"
-                        onerror="handleFrameError()">
-                    </iframe>
-                </div>
-            </div>
-        </div>
+        <div id="services-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+        <div id="pagination-container" class="flex flex-wrap justify-center items-center gap-1.5 mt-12"></div>
     </main>
 
-    <!-- 底部版权信息 -->
-    <footer class="py-4 text-center text-xs text-slate-500 border-t border-white/5">
-        &copy; 2026 到位速递 (ZBSSC) Logistics Management System. All Rights Reserved.
+    <!-- ==================== 底部：保留的 3299 个原始链接区域 ==================== -->
+    <div class="buttons-section" id="buttons-area">
+        <div class="buttons-container">
+            <div class="buttons-header">
+                <h3>📁 全球城市分站与加美跨境专线导航矩阵</h3>
+                <span class="badge">总计: 3299 个分站链接</span>
+            </div>
+            <p style="color:#888; font-size:13px; margin-bottom:15px;">您可以在下方直接搜索编号或城市关键词，点击任意链接查看对应的独立分站（1.html ~ 3299.html）：</p>
+                
+            <input type="text" id="btn-search" class="search-box" placeholder="输入编号或城市快速检索（例如：888 或 纽约、蒙特利尔、多伦多）..." oninput="filterButtons()">
+                
+            <!-- 3299个原始链接按钮网格容器 -->
+            <div class="grid-buttons" id="buttons-grid"></div>
+        </div>
+    </div>
+
+    <!-- 弹窗 1：路线详情与预约 -->
+    <div id="service-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 relative shadow-2xl">
+            <button onclick="closeModal('service-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="bg-orange-100 text-orange-600 p-3 rounded-xl"><i class="fa-solid fa-box text-xl"></i></div>
+                <div>
+                    <h3 id="modal-title" class="font-bold text-lg text-gray-900">服务路线详情</h3>
+                    <span id="modal-category" class="text-xs bg-orange-50 text-orange-600 px-2.5 py-0.5 rounded-full font-semibold">同城快递</span>
+                </div>
+            </div>
+            <p id="modal-desc" class="text-sm text-gray-600 mb-6 leading-relaxed">服务说明...</p>
+            
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 mb-6 space-y-2 text-xs">
+                <div class="flex justify-between"><span class="text-gray-500">基础参考运费：</span><span id="modal-price" class="font-black text-orange-600 text-sm">$15.00 CAD 起</span></div>
+                <div class="flex justify-between"><span class="text-gray-500">标准时效：</span><span class="font-semibold text-gray-800">1-3 小时 / 加美跨境 2-5 天</span></div>
+                <div class="flex justify-between"><span class="text-gray-500">保险保障：</span><span class="font-semibold text-emerald-600">✓ 正规海关清关 ✓ 全程保价</span></div>
+            </div>
+
+            <div class="flex space-x-3">
+                <button onclick="triggerBookingSuccess()" class="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-xl text-sm transition shadow-md cursor-pointer">确认预约此线路</button>
+                <button onclick="closeModal('service-modal')" class="px-5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 rounded-xl text-sm transition cursor-pointer">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 弹窗 2：运费在线估算器 -->
+    <div id="estimator-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 relative shadow-2xl">
+            <button onclick="closeModal('estimator-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="bg-amber-100 text-amber-600 p-3 rounded-xl"><i class="fa-solid fa-calculator text-xl"></i></div>
+                <div>
+                    <h3 class="font-bold text-lg text-gray-900">运费智能估算</h3>
+                    <p class="text-xs text-gray-500">输入包裹重量与加美两地计算实时价格</p>
+                </div>
+            </div>
+            
+            <div class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-gray-700 mb-1">物品重量 (kg)</label>
+                    <input type="number" id="calc-weight" value="5" min="1" max="500" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl outline-none">
+                </div>
+                <div>
+                    <label class="block font-semibold text-gray-700 mb-1">服务类型</label>
+                    <select id="calc-type" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl outline-none cursor-pointer">
+                        <option value="express">同城急送 (Same-Day)</option>
+                        <option value="moving">留学生行李搬家</option>
+                        <option value="air">加美跨境转运专线</option>
+                        <option value="b2b">商业大宗与清关配送</option>
+                    </select>
+                </div>
+                <div class="bg-orange-50 border border-orange-100 p-4 rounded-xl text-center">
+                    <span class="text-gray-600 block mb-1">预计测算费用：</span>
+                    <span id="calc-result" class="text-2xl font-black text-orange-600">$25.00 CAD</span>
+                </div>
+            </div>
+
+            <div class="mt-6 flex space-x-3">
+                <button onclick="calculateCost()" class="flex-1 bg-gray-900 hover:bg-orange-600 text-white font-bold py-3 rounded-xl text-xs transition cursor-pointer">重新计算</button>
+                <button onclick="closeModal('estimator-modal')" class="px-5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 rounded-xl text-xs transition cursor-pointer">完成</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部版权 -->
+    <footer class="bg-gray-900 text-gray-400 py-12 mt-20 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs space-y-3">
+            <p>© 2026 到位速递 (DaoWei Express) 版权所有. 加拿大与美国全境跨境物流、清关与同城转运专家。</p>
+            <p class="text-gray-500">核心服务区域：蒙特利尔、多伦多、温哥华 ⇄ 纽约、洛杉矶、芝加哥等北美核心城市与边境口岸。</p>
+        </div>
     </footer>
 
-    <!-- JavaScript 交互控制脚本 -->
+    <!-- JavaScript 逻辑与客服联动 -->
     <script>
-        // 设备切换视窗逻辑
-        function setDeviceMode(mode) {
-            const container = document.getElementById('frame-container');
-            const btnDesktop = document.getElementById('btn-desktop');
-            const btnTablet = document.getElementById('btn-tablet');
-            const btnMobile = document.getElementById('btn-mobile');
+        const uscaGlobalCities = [
+            "蒙特利尔 (Montreal)", "南岸 Brossard", "多伦多 (Toronto)", "温哥华 (Vancouver)", "纽约 (New York)", 
+            "洛杉矶 (Los Angeles)", "芝加哥 (Chicago)", "西雅图 (Seattle)", "波士顿 (Boston)", "渥太华 (Ottawa)",
+            "中国北京", "中国上海", "中国广州", "法国巴黎", "英国伦敦"
+        ];
 
-            // 重置所有按钮状态
-            [btnDesktop, btnTablet, btnMobile].forEach(btn => {
-                btn.className = "flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-medium transition-all flex items-center justify-center space-x-2 text-slate-400 hover:text-white hover:bg-white/5";
+        (function generate100kDaoWeiDatabase() {
+            const categories = ["同城快递", "留学生搬家", "国际转运", "商业B2B", "机场接送"];
+            const serviceTitles = [
+                "北美加美跨境清关与闪送服务",
+                "留学生跨国行李寄存与上门搬家",
+                "加美双向海运/空运拼箱专线",
+                "华人超市及生鲜商户同城冷链配送",
+                "宜家家具提货与专业组装上门",
+                "跨境电商一件代发与海外仓储配送",
+                "国际机场接送行李随车托运直达公寓",
+                "B2B商业急件及大宗货物加美专车直送"
+            ];
+
+            const safeImages = [
+                "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=600&q=80", 
+                "https://images.unsplash.com/photo-1565793298595-6a879b1d9492?auto=format&fit=crop&w=600&q=80", 
+                "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=600&q=80", 
+                "https://images.unsplash.com/photo-1616401784845-180882ba9ba8?auto=format&fit=crop&w=600&q=80", 
+                "https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=600&q=80"  
+            ];
+
+            window.getTotalCount = () => 100000;
+            window.getServiceByIndex = function(i) {
+                const zone = uscaGlobalCities[i % uscaGlobalCities.length];
+                const cat = categories[i % categories.length];
+                const titleBase = serviceTitles[i % serviceTitles.length];
+                return {
+                    id: i + 1,
+                    title: `[到位速递] ${titleBase} #${i + 1}`,
+                    zone: zone,
+                    category: cat,
+                    price: 25 + (i * 13) % 250,
+                    rating: parseFloat((4.80 + (i % 20) * 0.01).toFixed(2)),
+                    image: safeImages[i % safeImages.length],
+                    description: `北美网点：${zone}。到位速递为您提供标准的${cat}服务，配备中英法三语清关与调度专员，全天候保障安全准时达。`
+                };
+            };
+        })();
+
+        let currentPage = 1;
+        const pageSize = 200; 
+        let currentRotationIndex = 0;
+        let countdownTimer = 10;
+        let timerInterval = null;
+
+        function initWebsite() {
+            initZoneDropdown();
+            renderPaginatedServices();
+            startRotationEngine();
+            renderButtons();
+            generateBatchRows();
+        }
+
+        function initZoneDropdown() {
+            const select = document.getElementById('filter-zone');
+            select.innerHTML = '<option value="">全球网点及加美全境</option>';
+            uscaGlobalCities.forEach(z => {
+                select.innerHTML += `<option value="${z}">${z}</option>`;
             });
+        }
 
-            // 根据模式调整容器尺寸样式
-            if (mode === 'desktop') {
-                container.style.maxWidth = '100%';
-                container.style.height = '650px';
-                btnDesktop.className = "flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-medium transition-all flex items-center justify-center space-x-2 bg-blue-600 text-white shadow-md shadow-blue-600/30";
-            } else if (mode === 'tablet') {
-                container.style.maxWidth = '768px';
-                container.style.height = '600px';
-                btnTablet.className = "flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-medium transition-all flex items-center justify-center space-x-2 bg-blue-600 text-white shadow-md shadow-blue-600/30";
-            } else if (mode === 'mobile') {
-                container.style.maxWidth = '390px';
-                container.style.height = '660px';
-                btnMobile.className = "flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-medium transition-all flex items-center justify-center space-x-2 bg-blue-600 text-white shadow-md shadow-blue-600/30";
+        function renderPaginatedServices() {
+            const totalCount = window.getTotalCount();
+            const selectedZone = document.getElementById('filter-zone').value;
+            const selectedCat = document.getElementById('filter-category').value;
+
+            let filteredIndices = [];
+            for (let i = 0; i < totalCount; i++) {
+                const zoneName = uscaGlobalCities[i % uscaGlobalCities.length];
+                const catsList = ["同城快递", "留学生搬家", "国际转运", "商业B2B", "机场接送"];
+                const currentC = catsList[i % catsList.length];
+
+                if ((!selectedZone || zoneName.includes(selectedZone)) && (!selectedCat || currentC === selectedCat)) {
+                    filteredIndices.push(i);
+                }
             }
-        }
 
-        // 刷新 iframe 视图
-        function reloadFrame() {
-            const frame = document.getElementById('dispatch-frame');
-            frame.src = frame.src;
-        }
+            const totalFiltered = filteredIndices.length;
+            const totalPages = Math.ceil(totalFiltered / pageSize) || 1;
+            if (currentPage > totalPages) currentPage = 1;
 
-        // 容错降级提示
-        function handleFrameError() {
-            console.warn("由于目标站点启用了防嵌入保护(X-Frame-Options)或网络异常，iframe 可能会限制内嵌。");
-        }
-    </script>
-</body>
-</html>
-
-<!-- ==================== 底部地下：生成 3299 个按钮区域 ==================== -->
-<div class="buttons-section" id="buttons-area">
-    <div class="buttons-container">
-        <div class="buttons-header">
-            <h3>📁 到位速递客服微信 fundes 全球实体仓库信息大全</h3>
-            <span class="badge">到位速递</span>
-        </div>
-        <p style="color:#888; font-size:13px; margin-bottom:15px;">到位速递客服微信 fundes （加拿大东仓库电话）4382287888 （加拿大西仓库电话）7783832208  （美国仓库电话）9176210118：</p>
-        
-        <!-- 实时搜索框 -->
-        <input type="text" id="btn-search" class="search-box" placeholder="到位速递4天到中国" oninput="filterButtons()">
-        
-        <!-- 到位速递4382287888  （加拿大西仓库）7783832208  （美国仓库）9176210118-->
-        <div class="grid-buttons" id="buttons-grid"></div>
-    </div>
-</div>
-
-<footer>
-    © 2026 DW Global Express (到位速递). All Rights Reserved.
-</footer>
-
-<script>
-    // 自动生成 1 到 3299 的按钮
-    function renderButtons() {
-        const grid = document.getElementById('buttons-grid');
-        let html = '';
-        for (let i = 1; i <= 3299; i++) {
-            html += `<a href="${i}.html" class="btn-item" target="_blank" title="网页 ${i}">网页 ${i}</a>`;
-        }
-        grid.innerHTML = html;
-    }
-
-    // 实时搜索过滤按钮
-    function filterButtons() {
-        const keyword = document.getElementById('btn-search').value.toLowerCase().trim();
-        const buttons = document.getElementById('buttons-grid').getElementsByClassName('btn-item');
-        
-        for (let i = 0; i < buttons.length; i++) {
-            const text = buttons[i].textContent.toLowerCase();
-            if (text.includes(keyword)) {
-                buttons[i].style.display = 'block';
-            } else {
-                buttons[i].style.display = 'none';
+            const startIndex = (currentPage - 1) * pageSize;
+            const endIndex = Math.min(startIndex + pageSize, totalFiltered);
+            
+            const currentList = [];
+            for (let i = startIndex; i < endIndex; i++) {
+                currentList.push(window.getServiceByIndex(filteredIndices[i]));
             }
+
+            document.getElementById('service-count').textContent = totalFiltered;
+            document.getElementById('total-pages-label').textContent = totalPages;
+            
+            renderServicesGrid(currentList);
+            renderPaginationControls(totalPages);
         }
-    }
 
-    // 车站大屏动态刷新逻辑
-    const citiesList = ["多伦多", "蒙特利尔", "渥太华", "惠特比", "奥沙华", "阿贾克斯", "Markham", "Scarborough", "Mississauga", "Quebec City", "Hamilton", "London", "Brossard", "Laval"];
-    const truckTypesList = ["53尺全封闭干线大卡", "26尺尾板厢式货车", "48尺标箱冷藏卡", "24尺城际快运卡"];
-    const statusList = ["🟢 去程高速对开中", "🔵 返程满载疾驰中", "🟡 当日折返整备中", "🟢 准点到达分拨中心"];
+        function renderServicesGrid(list) {
+            const grid = document.getElementById('services-grid');
+            if (list.length === 0) {
+                grid.innerHTML = `<div class="col-span-full py-16 text-center text-gray-400"><i class="fa-solid fa-box-open text-4xl mb-3"></i><p>未找到符合条件的加美跨境路线与网点。</p></div>`;
+                return;
+            }
 
-    function generateBatchRows() {
-        const container = document.getElementById('board-rows');
-        if (!container) return;
-        let html = '';
-        for(let i = 1; i <= 10; i++) {
-            let origin = citiesList[Math.floor(Math.random() * citiesList.length)];
-            let dest = citiesList[Math.floor(Math.random() * citiesList.length)];
-            let truckId = `DW-${Math.floor(Math.random() * 89999) + 10000}`;
-            let truck = truckTypesList[Math.floor(Math.random() * truckTypesList.length)];
-            let status = statusList[Math.floor(Math.random() * statusList.length)];
-            html += `
-                <div class="train-row">
-                    <div class="truck-id">${truckId}</div>
-                    <div class="route-path">${origin} ⇄ ${dest}</div>
-                    <div><span class="freq-tag">一天一趟</span></div>
-                    <div class="flip-cell">10月15日 10:00</div>
-                    <div style="font-size:11px; color:#94a3b8;">${truck}</div>
-                    <div class="status-running">${status}</div>
+            grid.innerHTML = list.map(s => `
+                <div onclick="openServiceModal(${s.id})" class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group flex flex-col">
+                    <div class="relative h-48 overflow-hidden bg-gray-100">
+                        <img src="${s.image}" alt="${s.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-gray-900 text-xs font-bold px-2.5 py-1 rounded-full shadow">${s.zone}</span>
+                        <span class="absolute top-3 right-3 bg-orange-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow"><i class="fa-solid fa-star mr-1 text-[10px]"></i>${s.rating}</span>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="text-xs font-bold text-orange-600 mb-1 uppercase tracking-wider"><i class="fa-solid fa-tag mr-1"></i>${s.category}</div>
+                            <h3 class="font-bold text-gray-900 line-clamp-1 mb-2 group-hover:text-orange-600 transition">${s.title}</h3>
+                            <p class="text-xs text-gray-500 line-clamp-2 mb-4">${s.description}</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                            <div>
+                                <span class="text-lg font-black text-orange-600">$${s.price}</span>
+                                <span class="text-xs text-gray-400"> USD 起</span>
+                            </div>
+                            <span class="text-xs bg-orange-50 text-orange-600 px-2.5 py-1 rounded-lg font-semibold group-hover:bg-orange-600 group-hover:text-white transition">立即预约</span>
+                        </div>
+                    </div>
                 </div>
-            `;
+            `).join('');
         }
-        container.innerHTML = html;
-    }
 
-    window.onload = function() {
-        renderButtons();
-        generateBatchRows();
-    };
-</script>
+        function renderPaginationControls(totalPages) {
+            const container = document.getElementById('pagination-container');
+            if (totalPages <= 1) { container.innerHTML = ''; return; }
 
+            let html = `<button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled class="opacity-40 cursor-not-allowed"' : ''} class="px-3.5 py-2 bg-white border rounded-xl text-xs font-medium hover:bg-gray-50 cursor-pointer">上一页</button>`;
+            
+            let startPage = Math.max(1, currentPage - 3);
+            let endPage = Math.min(totalPages, startPage + 6);
 
+            if (startPage > 1) {
+                html += `<button onclick="goToPage(1)" class="px-3 py-2 bg-white border rounded-xl text-xs font-medium hover:bg-gray-50 cursor-pointer">1</button>`;
+                if (startPage > 2) html += `<span class="px-2 text-gray-400">...</span>`;
+            }
 
+            for (let i = startPage; i <= endPage; i++) {
+                html += `<button onclick="goToPage(${i})" class="px-3.5 py-2 rounded-xl text-xs font-bold cursor-pointer ${currentPage === i ? 'bg-orange-600 text-white shadow-md' : 'bg-white border hover:bg-gray-50'}">${i}</button>`;
+            }
+
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) html += `<span class="px-2 text-gray-400">...</span>`;
+                html += `<button onclick="goToPage(${totalPages})" class="px-3.5 py-2 bg-white border rounded-xl text-xs font-medium hover:bg-gray-50 cursor-pointer">${totalPages}</button>`;
+            }
+
+            html += `<button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled class="opacity-40 cursor-not-allowed"' : ''} class="px-3.5 py-2 bg-white border rounded-xl text-xs font-medium hover:bg-gray-50 cursor-pointer">下一页</button>`;
+            container.innerHTML = html;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            renderPaginatedServices();
+            window.scrollTo({ top: 500, behavior: 'smooth' });
+        }
+
+        function goToPage(page) {
+            currentPage = page;
+            renderPaginatedServices();
+            window.scrollTo({ top: 500, behavior: 'smooth' });
+        }
+
+        function filterServices() {
+            currentPage = 1;
+            renderPaginatedServices();
+        }
+
+        function openServiceModal(id) {
+            const service = window.getServiceByIndex(id - 1);
+            document.getElementById('modal-title').textContent = service.title;
+            document.getElementById('modal-category').textContent = service.category;
+            document.getElementById('modal-desc').textContent = service.description;
+            document.getElementById('modal-price').textContent = `$${service.price}.00 USD 起`;
+            document.getElementById('service-modal').classList.remove('hidden');
+        }
+
+        function openEstimatorModal() {
+            document.getElementById('estimator-modal').classList.remove('hidden');
+            calculateCost();
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        function triggerBookingSuccess() {
+            closeModal('service-modal');
+            const confirmed = confirm('预约成功！到位速递加美跨境调度中心已收到您的专线请求，中英法三语专员将在15分钟内与您联系。\n\n点击“确定”立即转入在线客服直接沟通！');
+            if (confirmed) {
+                window.open('https://tawk.to/chat/61d24aa080b2296cfdd4bcf7/1foen70rk', '_blank');
+            }
+        }
+
+        function simulateTracking() {
+            const val = document.getElementById('quick-track-input').value.trim();
+            if (!val) {
+                alert('请输入有效的加美运单号。');
+                return;
+            }
+            alert(`运单号 [${val}] 查询成功：当前已顺利通过美加边境海关查验，派送中！`);
+        }
+
+        function calculateCost() {
+            const weight = parseFloat(document.getElementById('calc-weight').value) || 5;
+            const type = document.getElementById('calc-type').value;
+            let base = 25;
+            if (type === 'moving') base = 55;
+            if (type === 'air') base = 75;
+            if (type === 'b2b') base = 120;
+
+            const total = base + (weight * 2.8);
+            document.getElementById('calc-result').textContent = `$${total.toFixed(2)} USD`;
+        }
+
+        function startRotationEngine() {
+            if (timerInterval) clearInterval(timerInterval);
+            updateHeroContent();
+            countdownTimer = 10;
+
+            timerInterval = setInterval(() => {
+                countdownTimer--;
+                document.getElementById('ticker-countdown').textContent = countdownTimer + 's';
+                if (countdownTimer <= 0) {
+                    currentRotationIndex = (currentRotationIndex + 1) % 5000;
+                    updateHeroContent();
+                    countdownTimer = 10;
+                }
+            }, 1000);
+        }
+
+        function updateHeroContent() {
+            const currentItem = window.getServiceByIndex(currentRotationIndex);
+            document.getElementById('ticker-route').textContent = `${currentItem.zone} - ${currentItem.category}`;
+            document.getElementById('hero-bg-img').src = currentItem.image;
+            document.getElementById('hero-title').textContent = `加美跨境物流专线：${currentItem.zone}`;
+            document.getElementById('hero-desc').textContent = currentItem.description;
+        }
+
+        function renderButtons() {
+            const grid = document.getElementById('buttons-grid');
+            if (!grid) return;
+            let html = '';
+            for (let i = 1; i <= 3299; i++) {
+                let cityShort = uscaGlobalCities[(i - 1) % uscaGlobalCities.length].split(' ')[0];
+                html += `<a href="${i}.html" class="btn-item" target="_blank" title="${cityShort} 分站 ${i}">${i}.${cityShort}</a>`;
+            }
+            grid.innerHTML = html;
+        }
+
+        function filterButtons() {
+            const keyword = document.getElementById('btn-search').value.toLowerCase().trim();
+            const buttons = document.getElementById('buttons-grid').getElementsByClassName('btn-item');
+                
+            for (let i = 0; i < buttons.length; i++) {
+                const text = buttons[i].textContent.toLowerCase();
+                if (text.includes(keyword)) {
+                    buttons[i].style.display = 'flex';
+                } else {
+                    buttons[i].style.display = 'none';
+                }
+            }
+        }
+
+        const truckTypesList = ["53尺加美海关监管卡", "26尺尾板厢式货车", "48尺标箱冷藏卡", "跨境航空宽体货机"];
+        const statusList = ["🟢 美加边境清关顺利", "🔵 北美干线对开中", "🟡 海关查验整备中", "🟢 顺利抵达转运中心"];
+
+        function generateBatchRows() {
+            const container = document.getElementById('board-rows');
+            if (!container) return;
+            let html = '';
+            for(let i = 1; i <= 5; i++) {
+                let origin = uscaGlobalCities[Math.floor(Math.random() * uscaGlobalCities.length)].split(' ')[0];
+                let dest = uscaGlobalCities[Math.floor(Math.random() * uscaGlobalCities.length)].split(' ')[0];
+                let truckId = `USCA-${Math.floor(Math.random() * 89999) + 10000}`;
+                let truck = truckTypesList[Math.floor(Math.random() * truckTypesList.length)];
+                let status = statusList[Math.floor(Math.random() * statusList.length)];
+                html += `
+                    <div class="train-row">
+                        <div class="truck-id">${truckId}</div>
+                        <div class="route-path">${origin} ⇄ ${dest}</div>
+                        <div><span class="freq-tag">加美每日班次</span></div>
+                        <div style="font-size:12px; color:#cbd5e1;">2026跨境专线</div>
+                        <div style="font-size:11px; color:#94a3b8;">${truck}</div>
+                        <div class="status-running">${status}</div>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        }
+
+        window.onload = initWebsite;
+    </script>
+
+    <!-- Tawk.to 在线客服系统全局挂载脚本 -->
+    <script type="text/javascript">
+        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        (function(){
+        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+        s1.async=true;
+        s1.src='https://embed.tawk.to/61d24aa080b2296cfdd4bcf7/1foen70rk';
+        s1.charset='UTF-8';
+        s1.setAttribute('crossorigin','*');
+        s0.parentNode.insertBefore(s1,getSun=function(){return s0});
+        })();
+    </script>
 </body>
 </html>
